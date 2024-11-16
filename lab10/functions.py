@@ -1,5 +1,7 @@
+# максимальное количество разбиений
 MAX_CNT = 500_000
 
+# метод левых прямоугольников
 def leftRectsInt(func, a, b, k):
     step = (b - a) / k
     area = 0
@@ -8,6 +10,7 @@ def leftRectsInt(func, a, b, k):
         area += func(x) * step
     return area
 
+# метод трапеции
 def trapInt(func, a, b, k):
     step = (b - a) / k
     area = 0
@@ -16,6 +19,7 @@ def trapInt(func, a, b, k):
         area += (func(x) + func(x+step)) * step / 2
     return area
 
+# нахождение количества разбиений бин-поиском
 def findSamplesCountEffective(integrate_method, func, a, b, eps):
     left = 1
     right = MAX_CNT
@@ -29,12 +33,14 @@ def findSamplesCountEffective(integrate_method, func, a, b, eps):
             right = mid
     return right
 
+# нахождение количества разбиений перебором
 def findSamplesCount(integrate_method, func, a, b, eps):
     for i in range(1, MAX_CNT):
         delta = abs(integrate_method(func, a, b, i) - integrate_method(func, a, b, 2*i))
         if delta < eps:
             return i
         
+# вывод таблицы
 def printTable(rows):
     columnSizes = [ max([len(str(x)) for x in el]) for el in zip(*rows) ]
     print('+' + '+'.join(['-' * (el+2) for el in columnSizes]) + '+')
