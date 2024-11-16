@@ -58,18 +58,18 @@ rel3, rel4 = abs(trueValue-i3), abs(trueValue-i4)
 
 # вывод таблицы
 table = [
-    ["", "N1", "Абс. / Отн.", "N2", "Абс. / Отн."],
+    ["", "N1", "Абс. / Отн. погрешность", "N2", "Абс. / Отн. погрешность"],
     ["Метод левых прямоугольников", 
-     f"{i1:3g}", 
-     f"{rel1:3g} / {rel1*100/trueValue:3g}%", 
-     f"{i2:3g}", 
-     f"{rel2:3g} / {rel2*100/trueValue:3g}%"
+     f"{i1:3.6g}", 
+     f"{rel1:3.6g} / {rel1*100/trueValue:3.6g}%", 
+     f"{i2:3.6g}", 
+     f"{rel2:3.6g} / {rel2*100/trueValue:3.6g}%"
     ],
     ["Метод трапеции", 
-     f"{i3:3g}", 
-     f"{rel3:3g} / {rel3*100/trueValue:3g}%", 
-     f"{i4:3g}", 
-     f"{rel4:3g} / {rel4*100/trueValue:3g}%"
+     f"{i3:3.6g}", 
+     f"{rel3:3.6g} / {rel3*100/trueValue:3.6g}%", 
+     f"{i4:3.6g}", 
+     f"{rel4:3.6g} / {rel4*100/trueValue:3.6g}%"
     ],
 ]
 printTable(table)
