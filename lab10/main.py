@@ -9,13 +9,14 @@
 
 # импорт пользовательских функций
 from functions import *
+import math
 
 # функции
 def f(x):
-    return x**3 + x - 1
+    return 1/x
 
 def af(x):
-    return x**4/4 + x**2/2 - x
+    return math.log(abs(x))
 
 # ввод данных
 a, b, n1, n2, eps = 0, 0, 0, 0, 0
@@ -48,51 +49,57 @@ while not isCorrect:
     
 
 # вычисление приближенных интегралов
-i1, i2 = leftRectsInt(f, a, b, n1), leftRectsInt(f, a, b, n2)
-i3, i4 = trapInt(f, a, b, n1), trapInt(f, a, b, n2)
-trueValue = af(b) - af(a)
+isCorrect = False
+try:
+    i1, i2 = leftRectsInt(f, a, b, n1), leftRectsInt(f, a, b, n2)
+    i3, i4 = trapInt(f, a, b, n1), trapInt(f, a, b, n2)
+    trueValue = af(b) - af(a)
+    isCorrect = True
+except:
+    print("Невозможно посчитать интеграл при данных параметрах")
 
-# вычисление погрешностей
-rel1, rel2 = abs(trueValue-i1), abs(trueValue-i2)
-rel3, rel4 = abs(trueValue-i3), abs(trueValue-i4)
+if isCorrect:
+    # вычисление погрешностей
+    rel1, rel2 = abs(trueValue-i1), abs(trueValue-i2)
+    rel3, rel4 = abs(trueValue-i3), abs(trueValue-i4)
 
-# вывод таблицы
-table = [
-    ["", "N1", "Абс. / Отн. погрешность", "N2", "Абс. / Отн. погрешность"],
-    ["Метод левых прямоугольников", 
-     f"{i1:3.6g}", 
-     f"{rel1:3.6g} / {rel1*100/trueValue:3.6g}%", 
-     f"{i2:3.6g}", 
-     f"{rel2:3.6g} / {rel2*100/trueValue:3.6g}%"
-    ],
-    ["Метод трапеции", 
-     f"{i3:3.6g}", 
-     f"{rel3:3.6g} / {rel3*100/trueValue:3.6g}%", 
-     f"{i4:3.6g}", 
-     f"{rel4:3.6g} / {rel4*100/trueValue:3.6g}%"
-    ],
-]
-printTable(table)
+    # вывод таблицы
+    table = [
+        ["", "N1", "Абс. / Отн. погрешность", "N2", "Абс. / Отн. погрешность"],
+        ["Метод левых прямоугольников", 
+        f"{i1:3.6g}", 
+        f"{rel1:3.6g} / {rel1*100/trueValue:3.6g}%", 
+        f"{i2:3.6g}", 
+        f"{rel2:3.6g} / {rel2*100/trueValue:3.6g}%"
+        ],
+        ["Метод трапеции", 
+        f"{i3:3.6g}", 
+        f"{rel3:3.6g} / {rel3*100/trueValue:3.6g}%", 
+        f"{i4:3.6g}", 
+        f"{rel4:3.6g} / {rel4*100/trueValue:3.6g}%"
+        ],
+    ]
+    printTable(table)
 
-print(f"Истинное значение интеграла: {trueValue}")
+    print(f"Истинное значение интеграла: {trueValue}")
 
-# Нахождение количества разбиений
-if min(rel1, rel2) < min(rel3, rel4):
-    print("Метод левых прямоугольников оказался более точным") # невозможно =)
-    
-    cnt = findSamplesCountEffective(trapInt, f, a, b, eps)
-    if (cnt == MAX_CNT): print("Не удалось достичь необходимой точности")
-    else: print(f"Количество разбиений для достижения точности eps: {cnt}")
-    
-    val = trapInt(f, a, b, cnt)
-    print(f"Приближенное значение интеграла: {val}")
+    # Нахождение количества разбиений
+    if min(rel1, rel2) < min(rel3, rel4):
+        print("Метод левых прямоугольников оказался более точным") # невозможно =)
+        
+        cnt = findSamplesCountEffective(trapInt, f, a, b, eps)
+        if (cnt == MAX_CNT): print("Не удалось достичь необходимой точности")
+        else: print(f"Количество разбиений для достижения точности eps: {cnt}")
+        
+        val = trapInt(f, a, b, cnt)
+        print(f"Приближенное значение интеграла: {val}")
 
-else:
-    print("Метод трапеции оказался более точным")
-    
-    cnt = findSamplesCountEffective(leftRectsInt, f, a, b, eps)    
-    if (cnt == MAX_CNT): print("Не удалось достичь необходимой точности")
-    else: print(f"Количество разбиений для достижения точности eps: {cnt}")
+    else:
+        print("Метод трапеции оказался более точным")
+        
+        cnt = findSamplesCountEffective(leftRectsInt, f, a, b, eps)    
+        if (cnt == MAX_CNT): print("Не удалось достичь необходимой точности")
+        else: print(f"Количество разбиений для достижения точности eps: {cnt}")
 
-    val = leftRectsInt(f, a, b, cnt)
-    print(f"Приближенное значение интеграла: {val}")
+        val = leftRectsInt(f, a, b, cnt)
+        print(f"Приближенное значение интеграла: {val}")
