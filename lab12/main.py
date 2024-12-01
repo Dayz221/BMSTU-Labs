@@ -1,15 +1,17 @@
 '''
     Выполнил: Пэкэлэу Даниил
     Группа: ИУ7-16Б
-    Назначение: текстовый процессор
+    Назначение: 
+        - текстовый процессор
+        - п. 6 - Вычитание и умножение
+        - п. 7 - Наиболее часто встречающееся слово в каждом предложении
 '''
 
-from os import path, system
-from functions import alignLeft, alignRight, stretch, deleteWord
+from functions import *
 
 menu = """
 Действия с текстом:
-0) Выйти и сохранить текст
+0) Выйти
 1) Выровнять текст по левому краю
 2) Выровнять текст по правому краю
 3) Выровнять текст по ширине
@@ -19,32 +21,23 @@ menu = """
 7) Найти и затем удалить слово или предложение по варианту
 """
 
-def update():
-    system("cls")
-
-def pause():
-    print("Нажмите любую клавишу...")
-    system("pause > nul")
-
-# Ввод имени файла (файл должен лежать в папке с проектом)
-correct = False
-filePath = ""
-while not correct:
-    fileName = input("Введите название файла: ")
-    filePath = path.join(path.dirname(__file__), fileName)
-    if not (path.exists(filePath) and fileName.strip() != ""):
-        print("Такого файла в папке с проектом нет...")
-    else:
-        correct = True
-
-# Чтение файла
-text = []
-with open(filePath, 'r', encoding='UTF-8') as file:
-    text = [line.strip('\n') for line in file.readlines()]
-system("cls")
+text = [
+    'Есть тети как тети',
+    'Есть дяди как дяди',
+    'Есть люди как люди',
+    'Есть ИУ7-14Б как ИУ7-14Б',
+    'Но в жизни бывает',
+    'Порой по-другому',
+    'Есть дяди как тети',
+    'Есть тети как дяди',
+    'Есть ИУ7-14Б как люди',
+    'И люди как ИУ7-14Б',
+    'ac 80 - 2 * 10 - 99 abc 99 - 5 a 5 * 5'
+]
 
 # Тело программы
 isRunning = True
+currentAlignment = alignLeft
 while isRunning:
     print(*text, sep='\n')
     print(menu)
@@ -53,27 +46,37 @@ while isRunning:
 
     match enter:
         case "0":
-            with open(filePath, 'w', encoding='UTF-8') as file:
-                file.write('\n'.join(text))
             isRunning = False
 
         case "1":
             text = alignLeft(text)
+            currentAlignment = alignLeft
         case "2":
             text = alignRight(text)
+            currentAlignment = alignRight
         case "3":
             text = stretch(text)
+            currentAlignment = stretch
+
         case "4":
             word = input("Введите слово, которое хотите удалить: ")
-            text = deleteWord(text, word, stretch)
+            text = deleteWord(text, word, currentAlignment)
+
         case "5":
-            pass
+            word1 = input("Введите слово, которое хотите заменить: ")
+            word2 = input("Введите слово, которым хотите заменить: ")
+            text = replaceWord(text, word1, word2, currentAlignment)
+
         case "6":
-            pass
+            text = countExpressions(text, currentAlignment)
+
         case "7":
-            pass
+            text, word = findAndDelete(text, currentAlignment)
+            print("Самое частоповторяющееся слово:", word)
+            pause()
+
         case _:
             print("Введено некорректное число!")
             pause()
     
-    update()
+    clear()
