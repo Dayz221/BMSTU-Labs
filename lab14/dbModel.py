@@ -39,7 +39,7 @@ MODEL = {
     "name": {
         "name": "Название",
         "enc_type": "128s",
-        "default": "Пустое название",
+        "default": "Пустое название".encode('utf-8'),
         "validator": strValidator,
         "offset": 0,
     },

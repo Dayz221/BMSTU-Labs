@@ -84,6 +84,9 @@ def addEntry(file: str, pos=-1):
             success = False
             while not success:
                 val = input(Fore.GREEN + field["name"] + ": " + Fore.WHITE)
+                if val == "":
+                    obj.append(field['default'])
+                    break
                 success, val = field["validator"](val)
                 if not success:
                     printErr("Неверное значение!")
