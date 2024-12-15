@@ -170,8 +170,7 @@ def deleteEntry(file: str, pos):
             pos += STRUCT.size + 1
             f.seek(pos + STRUCT.size + 1)
             next_line = f.readline()
-        f.seek(0, 2)
-        f.seek(f.tell() - STRUCT.size - 1)
+        f.seek(-STRUCT.size - 1, 2)
         f.truncate()
 
 
